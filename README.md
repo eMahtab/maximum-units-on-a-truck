@@ -36,11 +36,11 @@ Output: 91
 ```
 
 
-# Implementation 1 : PriorityQueue
-Since we have to maximize the total number of units, the idea is to always take the box which have maximum number of units witin it.
+# Implementation 1 : PriorityQueue (Time Limit Exceeded)
+Since we have to maximize the total number of units, the idea is to always take the box which have maximum number of units within it.
 So we can put all the boxes in the priority queue, where the box which have more number of units within it, should have more priority.
-When we take one box, we have to decrement the box count, and when the count reaches we should remove the box from the priority queue.
-We should do this as long as queue is not empty and we can put more boxes with the truck.
+When we take one box, we have to decrement the box count, and when the count reaches zero we should remove the box from the priority queue.
+We should do this as long as queue is not empty and we can put more boxes within the truck.
 ```java
 class Solution {
     public int maximumUnits(int[][] boxTypes, int truckSize) {
@@ -59,6 +59,34 @@ class Solution {
             boxAdded++;
             if(item[0] > 1) {
                 pq.add(new int[]{item[0] - 1, item[1]});
+            }
+        }
+        return maxUnits;
+    }
+}
+```
+
+# Implementation 2 : PriorityQueue (Improvement)
+```java
+class Solution {
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        if(boxTypes == null || boxTypes.length == 0)
+            return 0;
+        
+        Queue<int[]> pq = new PriorityQueue<>((b1,b2) -> b2[1]-b1[1]);
+        for(int[] box : boxTypes) {
+            pq.add(new int[]{box[0], box[1]});
+        }
+        int maxUnits = 0;
+        int boxAdded = 0;
+        while(!pq.isEmpty() && boxAdded < truckSize) {
+            int[] box = pq.peek();
+            maxUnits += box[1];
+            boxAdded++;
+            if(box[0] > 1) {
+                box[0] = box[0] - 1;
+            } else {
+                pq.remove();
             }
         }
         return maxUnits;
