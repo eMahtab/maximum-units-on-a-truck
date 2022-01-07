@@ -67,6 +67,8 @@ class Solution {
 ```
 
 # Implementation 2 : PriorityQueue (Improvement)
+In implementation 1 , we are `removing the top item and adding a new entry in priority queue with one less count` if count was greater than 1. In below approach we are
+just updating the count if count was greater than 1, so we are not adding a new entry in priority queue. If count was not greater than 1, in that case we are removing the box from the queue.
 ```java
 class Solution {
     public int maximumUnits(int[][] boxTypes, int truckSize) {
