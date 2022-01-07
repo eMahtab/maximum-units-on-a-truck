@@ -34,3 +34,30 @@ Output: 91
 2. 1 <= numberOfBoxesi, numberOfUnitsPerBoxi <= 1000
 3. 1 <= truckSize <= 10^6
 ```
+
+
+# Implementation 1 : PriorityQueue
+```java
+class Solution {
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        if(boxTypes == null || boxTypes.length == 0)
+            return 0;
+        
+        Queue<int[]> pq = new PriorityQueue<>((b1,b2) -> b2[1]-b1[1]);
+        for(int[] box : boxTypes) {
+            pq.add(new int[]{box[0], box[1]});
+        }
+        int maxUnits = 0;
+        int boxAdded = 0;
+        while(!pq.isEmpty() && boxAdded < truckSize) {
+            int[] item = pq.remove();
+            maxUnits += item[1];
+            boxAdded++;
+            if(item[0] > 1) {
+                pq.add(new int[]{item[0] - 1, item[1]});
+            }
+        }
+        return maxUnits;
+    }
+}
+```
